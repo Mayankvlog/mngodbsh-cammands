@@ -1,27 +1,27 @@
 # mngodbsh-cammands
 
 Helpers
-Show Databases
+##  Show Databases
 
 show dbs
 
 db // prints the current database
 
-Switch Database
+##  Switch Database
 
 use <database_name>
 
-Show Collections
+##  Show Collections
 
 show collections
 
-Run JavaScript File
+##  Run JavaScript File
 
 load("myScript.js")
 
-🔝 Table of Contents 🔝
-CRUD
-Create
+##  🔝 Table of Contents 🔝
+# CRUD
+##  Create
 
 db.coll.insertOne({name: "Max"})
 
@@ -33,7 +33,7 @@ db.coll.insertOne({date: ISODate()})
 
 db.coll.insertOne({name: "Max"}, {"writeConcern": {"w": "majority", "wtimeout": 5000}})
 
-Read
+##  Read
 
 db.coll.findOne() // returns a single document
 
@@ -49,13 +49,13 @@ db.coll.find({name: "Max", age: 32}).explain("executionStats") // or "queryPlann
 
 db.coll.distinct("name")
 
-// Count
+##  // Count
 
 db.coll.countDocuments({age: 32}) // alias for an aggregation pipeline - accurate count
 
 db.coll.estimatedDocumentCount()  // estimation based on collection metadata
 
-// Comparison
+##  // Comparison
 
 db.coll.find({"year": {$gt: 1970}})
 
@@ -91,7 +91,7 @@ db.coll.find({
 
 })
 
-// Element
+##  // Element
 
 db.coll.find({name: {$exists: true}})
 
@@ -99,7 +99,7 @@ db.coll.find({"zipCode": {$type: 2 }})
 
 db.coll.find({"zipCode": {$type: "string"}})
 
-// Aggregation Pipeline
+##  // Aggregation Pipeline
 
 db.coll.aggregate([
 
@@ -111,17 +111,17 @@ db.coll.aggregate([
 
 ])
 
-// Text search with a "text" index
+##  // Text search with a "text" index
 
 db.coll.find({$text: {$search: "cake"}}, {score: {$meta: "textScore"}}).sort({score: {$meta: "textScore"}})
 
-// Regex
+##  // Regex
 
 db.coll.find({name: /^Max/})   // regex: starts by letter "M"
 
 db.coll.find({name: /^Max$/i}) // regex case insensitive
 
-// Array
+##  // Array
 
 db.coll.find({tags: {$all: ["Realm", "Charts"]}})
 
@@ -129,7 +129,7 @@ db.coll.find({field: {$size: 2}}) // impossible to index - prefer storing the si
 
 db.coll.find({results: {$elemMatch: {product: "xyz", score: {$gte: 8}}}})
 
-// Projections
+##  // Projections
 
 db.coll.find({"x": 1}, {"actors": 1})               // actors + _id
 
@@ -137,11 +137,11 @@ db.coll.find({"x": 1}, {"actors": 1, "_id": 0})     // actors
 
 db.coll.find({"x": 1}, {"actors": 0, "summary": 0}) // all but "actors" and "summary"
 
-// Sort, skip, limit
+##  // Sort, skip, limit
 
 db.coll.find({}).sort({"year": 1, "rating": -1}).skip(10).limit(3)
 
-// Read Concern
+##  // Read Concern
 
 db.coll.find().readConcern("majority")
 
@@ -150,7 +150,7 @@ db.coll.find().readConcern("majority")
     BSON types
     Read Concern
 
-Update
+##  Update
 
 db.coll.updateOne({"_id": 1}, {$set: {"year": 2016, name: "Max"}})
 
@@ -170,7 +170,7 @@ db.coll.updateOne({"_id": 1}, {$currentDate: {"lastModified": true}})
 
 db.coll.updateOne({"_id": 1}, {$currentDate: {"lastModified": {$type: "timestamp"}}})
 
-// Array
+##  // Array
 
 db.coll.updateOne({"_id": 1}, {$push :{"array": 1}})
 
@@ -194,23 +194,23 @@ db.coll.updateMany({}, {$inc: {"grades.$[]": 10}})
 
 db.coll.updateMany({}, {$set: {"grades.$[element]": 100}}, {multi: true, arrayFilters: [{"element": {$gte: 100}}]})
 
-// FindOneAndUpdate
+##  // FindOneAndUpdate
 
 db.coll.findOneAndUpdate({"name": "Max"}, {$inc: {"points": 5}}, {returnNewDocument: true})
 
-// Upsert
+##  // Upsert
 
 db.coll.updateOne({"_id": 1}, {$set: {item: "apple"}, $setOnInsert: {defaultQty: 100}}, {upsert: true})
 
-// Replace
+##  // Replace
 
 db.coll.replaceOne({"name": "Max"}, {"firstname": "Maxime", "surname": "Beugnet"})
 
-// Write concern
+##  // Write concern
 
 db.coll.updateMany({}, {$set: {"x": 1}}, {"writeConcern": {"w": "majority", "wtimeout": 5000}})
 
-Delete
+##  Delete
 
 db.coll.deleteOne({name: "Max"})
 
@@ -220,17 +220,17 @@ db.coll.deleteMany({}) // WARNING! Deletes all the docs but not the collection i
 
 db.coll.findOneAndDelete({"name": "Max"})
 
-🔝 Table of Contents 🔝
-Databases and Collections
-Drop
+##  🔝 Table of Contents 🔝
+##  Databases and Collections
+##  Drop
 
 db.coll.drop()    // removes the collection and its index definitions
 
 db.dropDatabase() // double check that you are *NOT* on the PROD cluster... :-)
 
-Create Collection
+##  Create Collection
 
-// Create collection with a $jsonschema
+##  // Create collection with a $jsonschema
 
 db.createCollection("contacts", {
 
@@ -274,7 +274,7 @@ db.createCollection("contacts", {
 
 })
 
-Other Collection Functions
+##  Other Collection Functions
 
 db.coll.stats()
 
@@ -288,17 +288,17 @@ db.coll.validate({full: true})
 
 db.coll.renameCollection("new_coll", true) // 2nd parameter to drop the target collection if exists
 
-🔝 Table of Contents 🔝
-Indexes
-List Indexes
+## 🔝 Table of Contents 🔝
+##  Indexes
+##  List Indexes
 
 db.coll.getIndexes()
 
 db.coll.getIndexKeys()
 
-Create Indexes
+##  Create Indexes
 
-// Index Types
+##  // Index Types
 
 db.coll.createIndex({"name": 1})                // single field index
 
@@ -316,7 +316,7 @@ db.coll.createIndex({"loc": "2dsphere"})        // 2dsphere index
 
 db.coll.createIndex({"_id": "hashed"})          // hashed index
 
-// Index Options
+##  // Index Options
 
 db.coll.createIndex({"lastModifiedDate": 1}, {expireAfterSeconds: 3600})      // TTL index
 
@@ -328,11 +328,11 @@ db.coll.createIndex({"name": 1}, {collation: {locale: 'en', strength: 1}})    //
 
 db.coll.createIndex({"name": 1 }, {sparse: true})
 
-Drop Indexes
+##  Drop Indexes
 
 db.coll.dropIndex("name_1")
 
-Hide/Unhide Indexes
+##  Hide/Unhide Indexes
 
 db.coll.hideIndex("name_1")
 
@@ -340,10 +340,10 @@ db.coll.unhideIndex("name_1")
 
     Indexes documentation
 
-🔝 Table of Contents 🔝
-Handy commands
+##  🔝 Table of Contents 🔝
+##  Handy commands
 
-use admin
+##  use admin
 
 db.createUser({"user": "root", "pwd": passwordPrompt(), "roles": ["root"]})
 
@@ -395,8 +395,8 @@ db.getFreeMonitoringStatus()
 
 db.createView("viewName", "sourceColl", [{$project:{department: 1}}])
 
-🔝 Table of Contents 🔝
-Change Streams
+## 🔝 Table of Contents 🔝
+##  Change Streams
 
 watchCursor = db.coll.watch( [ { $match : {"operationType" : "insert" } } ] )
 
@@ -410,8 +410,8 @@ while (!watchCursor.isExhausted()){
 
 }
 
-🔝 Table of Contents 🔝
-Replica Set
+##  🔝 Table of Contents 🔝
+##  Replica Set
 
 rs.status()
 
@@ -449,8 +449,8 @@ db.getMongo().setReadPref('secondaryPreferred')
 
 rs.stepDown(20, 5) // (stepDownSecs, secondaryCatchUpPeriodSecs)
 
-🔝 Table of Contents 🔝
-Sharded Cluster
+##  🔝 Table of Contents 🔝
+##  Sharded Cluster
 
 db.printShardingStatus()
 

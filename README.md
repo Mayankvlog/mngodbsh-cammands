@@ -496,5 +496,9 @@ sh.addShardToZone("shard0000", "NYC")
 
 sh.re
 
+
+
+
+
 moveShardFromZone("shard0000", "NYC")
 
